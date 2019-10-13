@@ -1,0 +1,84 @@
+hello:
+	.asciz "Hel%lo Dean!\n"
+
+helloend: 
+  .equ length, helloend - hello			#find length of the String
+
+char:
+	.asciz "%"
+
+err: .asciz "There is no % \n"
+
+errend:
+	.equ length1, errend - err
+	
+corr: .asciz "There is a % \n"
+
+corrend:
+	.equ length2, corrend - corr
+
+.global main
+
+main:
+
+	movq $length, %rax
+	call recognize
+	
+
+	movq $60 , %rax 
+	movq $0 , %rdx 
+	syscall
+
+
+my_printf:
+
+  movq $1, %rax
+	movq $1, %rdi
+  movq $corr, %rsi
+	movq $length2, %rdx
+	syscall
+
+  ret
+
+error:
+	movq $1, %rax
+	movq $1, %rdi
+  movq $err, %rsi
+	movq $length1, %rdx
+  syscall
+  ret
+
+recognize: 
+  movq $0, %rdx     								#initialize %rdx as the loop counter
+	movq $char, %rcx									#move the character % we want to compare to %rcx
+	movb 0(%rcx), %ch 		            #move the byte to be compared to register %ch
+	movq $hello, %rbx 								#move the string to be compared to register %rbx
+	
+	
+	
+  loop:
+  	movb (%rdx, %rbx), %cl          #move the character to be compared into %cl
+  	incq %rdx												#increment the counter
+  	cmpq %rdx, %rax                 #compare the counter to the length
+  	je error                         
+  	je endreg
+  	cmpb %ch, %cl
+  	call addchar
+  	jne loop
+  	je my_printf
+  	
+  
+  addchar:
+  	
+	
+	
+  endreg:
+  	ret
+	
+
+	
+	
+  
+
+  #jmp error
+  
