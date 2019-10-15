@@ -35,7 +35,6 @@ got_print:
 
 recognize: 
 
-
 	movq $length, %r9                 #store length in register %r9 
   movq $0, %r8     								  #initialize %rdx as the loop counter	
 
