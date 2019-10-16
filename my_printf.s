@@ -54,6 +54,7 @@ recognize:
   	ret
 	
 	print:
+		
 		movq $1, %rax
 		movq $1, %rdi
 		movq %rbx, %rsi
@@ -65,6 +66,7 @@ recognize:
 	
 	case:
 		incq %rbx
+		incq %r8
 		cmpb $'%', 0(%rbx)
 		je print
 		jmp loop
