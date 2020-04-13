@@ -1,0 +1,33 @@
+cmpb $'u', 0(%rbx)
+		je caseu
+		jmp loop
+
+		caseu:
+		 	
+			movq $0, %r15   #counter initialization
+			popq %rax       #number in rax
+			jmp loopnum     #loop it
+
+
+		loopnum:
+			movq $0, %rdx
+			movq $10, %rbx  	#10 in rbx
+			idivq %rbx 				#divide rax with rbx(=10)
+			addq $'0', %rdx	  #add '0' to remainder
+			pushq %rdx 				#remainder in stack
+			addq $1, %r15			#increment counter
+			cmpq $0, %rax 			
+			jne loopnum				#keep looping until quontient is 0
+			
+		printnum:
+			movq $1, %rax 		#arg
+			movq $1, %rdi 		#arg
+			popq %rsi 				#move digit from stack to argument
+			movq $1, %rdx 		#arg
+			syscall						#print
+			decq %r15
+			cmpq $0, %rcx		
+			je printnum
+			incq %r8					#add1
+			incq %rbx					#add1
+			jmp loop
